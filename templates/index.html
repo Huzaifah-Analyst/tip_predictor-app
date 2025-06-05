@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tip Prediction App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+        <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">Tip Prediction</h1>
+        <form action="/predict" method="POST" class="space-y-4">
+            <div>
+                <label for="total_bill" class="block text-gray-700 font-medium">Total Bill ($):</label>
+                <input type="number" id="total_bill" name="total_bill" step="1" min="0" required 
+                       class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+                <label for="size" class="block text-gray-700 font-medium">Party Size:</label>
+                <input type="number" id="size" name="size" step="1" min="1" required 
+                       class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition duration-200">
+                Calculate Tip
+            </button>
+        </form>
+        {% if prediction %}
+        <div class="mt-6 p-4 bg-gray-50 rounded-md text-center">
+            <p class="text-gray-700">Predicted Tip: <span class="font-bold text-blue-600">${{ prediction|round(2) }}</span></p>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Basic client-side validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const totalBill = document.getElementById('total_bill').value;
+            const size = document.getElementById('size').value;
+            if (totalBill <= 0) {
+                e.preventDefault();
+                alert('Total bill must be greater than 0.');
+            }
+            if (size < 1) {
+                e.preventDefault();
+                alert('Party size must be at least 1.');
+            }
+        });
+    </script>
+</body>
+</html>
